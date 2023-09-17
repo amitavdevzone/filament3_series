@@ -53,7 +53,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function customers(): HasMany
     {
-        return $this->hasMany(Customer::class)
-            ->orderByDesc('id');
+        return $this->hasMany(Customer::class);
     }
 }
