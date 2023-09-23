@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Customer;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +22,17 @@ class DatabaseSeeder extends Seeder
             'email' => 'reachme@amitavroy.com',
             'password' => bcrypt('Password@123'),
         ]);
+
+        User::factory()->create([
+            'name' => 'Jhon Doe',
+            'email' => 'jho.doe@gmail.com',
+            'password' => bcrypt('Password@123'),
+        ]);
+
+        Carbon::now()->subDay();
+        Customer::factory(25)->create(['user_id' => 2]);
+
+        Carbon::now()->addDay();
+        Customer::factory(10)->create(['user_id' => 1]);
     }
 }
