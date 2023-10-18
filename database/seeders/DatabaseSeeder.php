@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Customer;
+use App\Models\Deal;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -30,9 +31,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Carbon::now()->subDay();
-        Customer::factory(25)->create(['user_id' => 2]);
+        Customer::factory(25)->create(['user_id' => 2])
+            ->each(function (Customer $customer) {
+                Deal::factory(10)->create(['customer_id' => $customer->id]);
+            });
 
         Carbon::now()->addDay();
-        Customer::factory(10)->create(['user_id' => 1]);
+        Customer::factory(10)->create(['user_id' => 1])
+            ->each(function (Customer $customer) {
+                Deal::factory(10)->create(['customer_id' => $customer->id]);
+            });
     }
 }

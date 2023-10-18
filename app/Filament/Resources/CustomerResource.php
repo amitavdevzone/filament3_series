@@ -37,15 +37,15 @@ class CustomerResource extends Resource
                     ->schema([
                         Placeholder::make('user_id')
                             ->label('Owner')
-                            ->content(fn(Customer $customer): ?string => $customer?->owner?->name)
+                            ->content(fn (Customer $customer): ?string => $customer?->owner?->name)
                             ->hiddenOn('create'),
                         Placeholder::make('created_at')
                             ->label('Created at')
-                            ->content(fn(Customer $customer): ?string => $customer->created_at?->diffForHumans())
+                            ->content(fn (Customer $customer): ?string => $customer->created_at?->diffForHumans())
                             ->hiddenOn('create'),
                         Placeholder::make('updated_at')
                             ->label('Last upated')
-                            ->content(fn(Customer $customer): ?string => $customer->updated_at?->diffForHumans())
+                            ->content(fn (Customer $customer): ?string => $customer->updated_at?->diffForHumans())
                             ->hiddenOn('create'),
                     ])
                     ->columnSpan(1),
@@ -60,7 +60,7 @@ class CustomerResource extends Resource
                 TextColumn::make('email'),
                 TextColumn::make('phone_number'),
                 TextColumn::make('owner.name')
-                    ->hidden(fn(Customer $customer): bool => $customer->user_id !== auth()->user()->id),
+                    ->hidden(fn (Customer $customer): bool => $customer->user_id !== auth()->user()->id),
                 TextColumn::make('created_at'),
                 TextColumn::make('updated_at'),
             ])

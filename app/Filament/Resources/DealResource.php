@@ -2,16 +2,16 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\DealStages;
 use App\Filament\Resources\DealResource\Pages;
-use App\Filament\Resources\DealResource\RelationManagers;
 use App\Models\Deal;
-use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DealResource extends Resource
 {
@@ -23,7 +23,20 @@ class DealResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->required()
+                    ->minLength(3)
+                    ->maxLength(255),
+                Select::make('stage')
+                    ->required()
+                    ->options(DealStages::class),
+                Select::make('customer_id')
+                    ->searchable()
+                    ->relationship(name: 'customer', titleAttribute: 'name'),
+                TextInput::make('deal_value')
+                    ->required(),
+                RichEditor::make('description')
+                    ->required(),
             ]);
     }
 
@@ -31,7 +44,11 @@ class DealResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('stage'),
+                Tables\Columns\TextColumn::make('customer.name'),
+                Tables\Columns\TextColumn::make('deal_value'),
+                Tables\Columns\TextColumn::make('owner.name'),
             ])
             ->filters([
                 //
@@ -45,14 +62,14 @@ class DealResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -60,5 +77,5 @@ class DealResource extends Resource
             'create' => Pages\CreateDeal::route('/create'),
             'edit' => Pages\EditDeal::route('/{record}/edit'),
         ];
-    }    
+    }
 }

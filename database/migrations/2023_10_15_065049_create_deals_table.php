@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('stage', DealStages::values())->default(DealStages::DEAL_INITIATED->value);
             $table->foreignIdFor(Customer::class)->index();
             $table->foreignIdFor(User::class, 'owner_id')->index();
-            $table->float('value', 10, 2);
+            $table->float('deal_value', 10, 2);
             $table->timestamps();
         });
     }
