@@ -20,7 +20,7 @@ class DealFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->word(),
             'description' => fake()->paragraph(),
             'stage' => fake()->randomElement(DealStages::values()),
             'customer_id' => fake()->randomElement(Customer::select('id')->get()->pluck('id')->toArray()),

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerResource\Pages;
+use App\Filament\Resources\CustomerResource\RelationManagers\DealsRelationManager;
 use App\Models\Customer;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
@@ -80,7 +81,7 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            DealsRelationManager::class,
         ];
     }
 
