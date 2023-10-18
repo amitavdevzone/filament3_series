@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\DealStages;
 use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->enum('status', ['Contacted', 'Arranged call']); // need to add more
+            $table->enum('stage', DealStages::values())->default(DealStages::DEAL_INITIATED->value);
             $table->foreignIdFor(Customer::class)->index();
             $table->foreignIdFor(User::class, 'owner_id')->index();
             $table->float('value', 10, 2);
