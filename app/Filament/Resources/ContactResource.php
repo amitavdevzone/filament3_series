@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CustomerResource\Pages;
-use App\Filament\Resources\CustomerResource\RelationManagers\DealsRelationManager;
-use App\Models\Customer;
+use App\Filament\Resources\ContactResource\Pages;
+use App\Filament\Resources\ContactResource\RelationManagers\DealsRelationManager;
+use App\Models\Contact;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -14,9 +14,9 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class CustomerResource extends Resource
+class ContactResource extends Resource
 {
-    protected static ?string $model = Customer::class;
+    protected static ?string $model = Contact::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
@@ -25,7 +25,7 @@ class CustomerResource extends Resource
         return $form
             ->schema([
                 Section::make('Personal information')
-                    ->description('The personal information of a Customer')
+                    ->description('The personal information of a Contact')
                     ->schema([
                         TextInput::make('name')
                             ->required(),
@@ -38,15 +38,15 @@ class CustomerResource extends Resource
                     ->schema([
                         Placeholder::make('user_id')
                             ->label('Owner')
-                            ->content(fn (Customer $customer): ?string => $customer?->owner?->name)
+                            ->content(fn (Contact $contact): ?string => $contact?->owner?->name)
                             ->hiddenOn('create'),
                         Placeholder::make('created_at')
                             ->label('Created at')
-                            ->content(fn (Customer $customer): ?string => $customer->created_at?->diffForHumans())
+                            ->content(fn (Contact $contact): ?string => $contact->created_at?->diffForHumans())
                             ->hiddenOn('create'),
                         Placeholder::make('updated_at')
-                            ->label('Last upated')
-                            ->content(fn (Customer $customer): ?string => $customer->updated_at?->diffForHumans())
+                            ->label('Last updated')
+                            ->content(fn (Contact $contact): ?string => $contact->updated_at?->diffForHumans())
                             ->hiddenOn('create'),
                     ])
                     ->columnSpan(1),
@@ -61,7 +61,7 @@ class CustomerResource extends Resource
                 TextColumn::make('email'),
                 TextColumn::make('phone_number'),
                 TextColumn::make('owner.name')
-                    ->hidden(fn (Customer $customer): bool => $customer->user_id !== auth()->user()->id),
+                    ->hidden(fn (Contact $contact): bool => $contact->user_id !== auth()->user()->id),
                 TextColumn::make('created_at'),
                 TextColumn::make('updated_at'),
             ])
@@ -88,9 +88,9 @@ class CustomerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCustomers::route('/'),
-            'create' => Pages\CreateCustomer::route('/create'),
-            'edit' => Pages\EditCustomer::route('/{record}/edit'),
+            'index' => Pages\ListContacts::route('/'),
+            'create' => Pages\CreateContact::route('/create'),
+            'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
     }
 }

@@ -1,6 +1,6 @@
 Deal
 
--   deal is created for a customer
+-   deal is created for a contact
 -   deal will have multiple stages (can refer to Hubspot)
 -   a deal will have owners and collaborators
 -   a deal will have a value
@@ -12,7 +12,7 @@ Deal
 [Deal]
 
 -   deal name
--   customer id
+-   contact id
 -   description
 -   status [enum of stages]
 -   owner

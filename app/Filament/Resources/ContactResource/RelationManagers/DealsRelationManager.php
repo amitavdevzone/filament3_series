@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\CustomerResource\RelationManagers;
+namespace App\Filament\Resources\ContactResource\RelationManagers;
 
 use App\Filament\Resources\DealResource;
 use Filament\Forms\Form;
@@ -24,7 +24,7 @@ class DealsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('stage'),
-                Tables\Columns\TextColumn::make('customer.name'),
+                Tables\Columns\TextColumn::make('contact.name'),
                 Tables\Columns\TextColumn::make('deal_value'),
                 Tables\Columns\TextColumn::make('owner.name'),
             ])

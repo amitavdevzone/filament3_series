@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\CustomerResource\Pages;
+namespace App\Filament\Resources\ContactResource\Pages;
 
-use App\Filament\Resources\CustomerResource;
+use App\Filament\Resources\ContactResource;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateCustomer extends CreateRecord
+class CreateContact extends CreateRecord
 {
-    protected static string $resource = CustomerResource::class;
+    protected static string $resource = ContactResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
@@ -19,15 +19,15 @@ class CreateCustomer extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return CustomerResource::getUrl('index');
+        return ContactResource::getUrl('index');
     }
 
     protected function getCreatedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('A new customer was added. Horray!!!')
+            ->title('A new contact was added. Horray!!!')
             ->success()
-            ->body('A new customer got added. Let us try and add more')
+            ->body('A new contact got added. Let us try and add more')
             ->duration(3000)
             ->send();
     }

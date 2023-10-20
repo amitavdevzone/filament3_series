@@ -11,12 +11,12 @@ class Deal extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'status', 'customer_id', 'owner_id', 'deal_value',
+        'name', 'description', 'status', 'contact_id', 'owner_id', 'deal_value',
     ];
 
-    public function customer(): BelongsTo
+    public function contact(): BelongsTo
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Contact::class);
     }
 
     public function owner(): BelongsTo

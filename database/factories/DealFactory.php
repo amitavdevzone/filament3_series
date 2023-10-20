@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\DealStages;
-use App\Models\Customer;
+use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +23,7 @@ class DealFactory extends Factory
             'name' => fake()->word(),
             'description' => fake()->paragraph(),
             'stage' => fake()->randomElement(DealStages::values()),
-            'customer_id' => fake()->randomElement(Customer::select('id')->get()->pluck('id')->toArray()),
+            'contact_id' => fake()->randomElement(Contact::select('id')->get()->pluck('id')->toArray()),
             'owner_id' => fake()->randomElement(User::select('id')->get()->pluck('id')->toArray()),
             'deal_value' => fake()->numberBetween(1000, 10000),
         ];

@@ -30,9 +30,9 @@ class DealResource extends Resource
                 Select::make('stage')
                     ->required()
                     ->options(DealStages::class),
-                Select::make('customer_id')
+                Select::make('contact_id')
                     ->searchable()
-                    ->relationship(name: 'customer', titleAttribute: 'name'),
+                    ->relationship(name: 'contact', titleAttribute: 'name'),
                 TextInput::make('deal_value')
                     ->required(),
                 RichEditor::make('description')
@@ -46,7 +46,7 @@ class DealResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('stage'),
-                Tables\Columns\TextColumn::make('customer.name'),
+                Tables\Columns\TextColumn::make('contact.name'),
                 Tables\Columns\TextColumn::make('deal_value'),
                 Tables\Columns\TextColumn::make('owner.name'),
             ])
