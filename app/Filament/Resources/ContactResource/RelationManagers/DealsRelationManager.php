@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ContactResource\RelationManagers;
 
+use App\Actions\OwnedCreateAction;
 use App\Filament\Resources\DealResource;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -32,12 +33,7 @@ class DealsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->mutateFormDataUsing(function (array $data) {
-                        $data['owner_id'] = auth()->user()->id;
-
-                        return $data;
-                    }),
+                OwnedCreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
