@@ -8,7 +8,7 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateDeal extends CreateRecord
 {
-    // use OwnedDataMutation;
+    use OwnedDataMutation;
 
     protected static string $resource = DealResource::class;
 }
