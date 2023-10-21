@@ -31,9 +31,9 @@ class ListContacts extends ListRecords
             'all' => Tab::make('All contacts')
                 ->icon('heroicon-m-user-group'),
             'me' => Tab::make('My contacts')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', auth()->user()->id))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('owner_id', auth()->user()->id))
                 ->icon('heroicon-m-user')
-                ->badge(Contact::where('user_id', auth()->user()->id)->count()),
+                ->badge(Contact::where('owner_id', auth()->user()->id)->count()),
         ];
     }
 

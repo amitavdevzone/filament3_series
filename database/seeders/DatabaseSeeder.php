@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\User;
@@ -31,15 +33,35 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Carbon::now()->subDay();
-        Contact::factory(25)->create(['user_id' => 2])
-            ->each(function (Contact $contact) {
-                Deal::factory(10)->create(['contact_id' => $contact->id]);
-            });
+        // Create 25 contacts with an owner_id of 2.
+        $contacts = Contact::factory(25)->create(['owner_id' => 2]);
+
+        $companies = Company::factory(25)->create(['owner_id' => 2]);
+
+        // Associate companies with contacts in a many-to-many relationship.
+        $contacts->each(function (Contact $contact) use ($companies) {
+            $contact->companies()->attach($companies->random(rand(5, 25)));
+        });
+
+        // Create 10 deals for each contact.
+        $contacts->each(function (Contact $contact) {
+            Deal::factory(10)->create(['contact_id' => $contact->id]);
+        });
 
         Carbon::now()->addDay();
-        Contact::factory(10)->create(['user_id' => 1])
-            ->each(function (Contact $contact) {
-                Deal::factory(10)->create(['contact_id' => $contact->id]);
-            });
+        // Create 25 contacts with an owner_id of 2.
+        $contacts = Contact::factory(25)->create(['owner_id' => 1]);
+
+        $companies = Company::factory(25)->create(['owner_id' => 1]);
+
+        // Associate companies with contacts in a many-to-many relationship.
+        $contacts->each(function (Contact $contact) use ($companies) {
+            $contact->companies()->attach($companies->random(rand(5, 25)));
+        });
+
+        // Create 10 deals for each contact.
+        $contacts->each(function (Contact $contact) {
+            Deal::factory(10)->create(['contact_id' => $contact->id]);
+        });
     }
 }

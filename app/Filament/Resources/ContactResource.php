@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContactResource\Pages;
+use App\Filament\Resources\ContactResource\RelationManagers\CompaniesRelationManager;
 use App\Filament\Resources\ContactResource\RelationManagers\DealsRelationManager;
 use App\Models\Contact;
 use Filament\Forms\Components\Placeholder;
@@ -36,7 +37,7 @@ class ContactResource extends Resource
                     ])->columnSpan(2),
                 Section::make('Meta data')
                     ->schema([
-                        Placeholder::make('user_id')
+                        Placeholder::make('owner_id')
                             ->label('Owner')
                             ->content(fn (Contact $contact): ?string => $contact?->owner?->name)
                             ->hiddenOn('create'),
@@ -61,15 +62,16 @@ class ContactResource extends Resource
                 TextColumn::make('email'),
                 TextColumn::make('phone_number'),
                 TextColumn::make('owner.name')
-                    ->hidden(fn (Contact $contact): bool => $contact->user_id !== auth()->user()->id),
+                    ->hidden(fn (Contact $contact): bool => $contact->owner_id !== auth()->user()->id),
                 TextColumn::make('created_at'),
-                TextColumn::make('updated_at'),
+                TextColumn::make('updated_at')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->button(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -82,6 +84,7 @@ class ContactResource extends Resource
     {
         return [
             DealsRelationManager::class,
+            CompaniesRelationManager::class,
         ];
     }
 
