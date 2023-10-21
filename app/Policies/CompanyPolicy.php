@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Contact;
+use App\Models\Company;
 use App\Models\User;
 
-class ContactPolicy
+class CompanyPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,7 +18,7 @@ class ContactPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Contact $contact): bool
+    public function view(User $user, Company $company): bool
     {
         return ! auth()->guest();
     }
@@ -34,32 +34,32 @@ class ContactPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Contact $contact): bool
+    public function update(User $user, Company $company): bool
     {
-        return $user->id === $contact->owner_id;
+        return $user->id === $company->owner_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Contact $contact): bool
+    public function delete(User $user, Company $company): bool
     {
-        return $user->id === $contact->owner_id;
+        return $user->id === $company->owner_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Contact $contact): bool
+    public function restore(User $user, Company $company): bool
     {
-        return $user->id === $contact->owner_id;
+        return $user->id === $company->owner_id;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Contact $contact): bool
+    public function forceDelete(User $user, Company $company): bool
     {
-        return $user->id === $contact->owner_id;
+        return $user->id === $company->owner_id;
     }
 }

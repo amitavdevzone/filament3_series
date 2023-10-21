@@ -6,14 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Contact extends Model
+class Company extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'phone_number', 'owner_id',
+        'name',
+        'industry',
+        'website',
+        'status',
+        'owner_id',
     ];
 
     public function owner(): BelongsTo
@@ -21,13 +24,8 @@ class Contact extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function companies(): BelongsToMany
+    public function contacts(): BelongsToMany
     {
-        return $this->belongsToMany(Company::class);
-    }
-
-    public function deals(): HasMany
-    {
-        return $this->hasMany(Deal::class)->orderByDesc('id');
+        return $this->belongsToMany(Contact::class);
     }
 }

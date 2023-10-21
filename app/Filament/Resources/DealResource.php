@@ -45,16 +45,17 @@ class DealResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('stage'),
                 Tables\Columns\TextColumn::make('contact.name'),
                 Tables\Columns\TextColumn::make('deal_value'),
+                Tables\Columns\SelectColumn::make('stage')
+                    ->options(DealStages::class),
                 Tables\Columns\TextColumn::make('owner.name'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->button(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
