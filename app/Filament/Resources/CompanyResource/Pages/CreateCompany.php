@@ -8,7 +8,7 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateCompany extends CreateRecord
 {
-    // use OwnedDataMutation;
+    use OwnedDataMutation;
 
     protected static string $resource = CompanyResource::class;
 }

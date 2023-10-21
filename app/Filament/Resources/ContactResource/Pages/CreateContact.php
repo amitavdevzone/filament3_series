@@ -9,7 +9,7 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateContact extends CreateRecord
 {
-    // use OwnedDataMutation;
+    use OwnedDataMutation;
 
     protected static string $resource = ContactResource::class;
 
