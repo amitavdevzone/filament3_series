@@ -1,3 +1,11 @@
+Thinking of how to work on activity
+
+-   Every event inside the application should be tracked
+-   Need to see if Spatie package can work
+-   Check how I can use Filament to display the content
+-   Important to plan a clean up thing - don't want to hold up the data for ages
+-   Look at what is the best way to show activites in different part of the app
+
 Deal
 
 -   deal is created for a contact
