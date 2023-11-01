@@ -9,6 +9,9 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -55,12 +58,36 @@ class DealResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()->button(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make()
+                    ->columns([
+                        'sm' => 4,
+                    ])
+                    ->schema([
+                        Section::make()->schema([])->columnSpan(1),
+                        Section::make()
+                            ->columnSpan(2)
+                            ->schema([
+                                TextEntry::make('name')
+                                    ->label('Deal name'),
+                                TextEntry::make('description'),
+                                TextEntry::make('stage'),
+                            ]),
+                        Section::make()->schema([])->columnSpan(1),
+                    ]),
             ]);
     }
 
@@ -76,6 +103,7 @@ class DealResource extends Resource
         return [
             'index' => Pages\ListDeals::route('/'),
             'create' => Pages\CreateDeal::route('/create'),
+            'view' => Pages\ViewDeal::route('/{record}/view'),
             'edit' => Pages\EditDeal::route('/{record}/edit'),
         ];
     }
