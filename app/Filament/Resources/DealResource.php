@@ -15,6 +15,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class DealResource extends Resource
 {
@@ -35,7 +36,12 @@ class DealResource extends Resource
                     ->options(DealStages::class),
                 Select::make('contact_id')
                     ->searchable()
-                    ->relationship(name: 'contact', titleAttribute: 'name'),
+                    ->preload()
+                    ->relationship(
+                        name: 'contact',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn (Builder $query) => $query->active(),
+                    ),
                 TextInput::make('deal_value')
                     ->required(),
                 RichEditor::make('description')
@@ -83,7 +89,8 @@ class DealResource extends Resource
                             ->schema([
                                 TextEntry::make('name')
                                     ->label('Deal name'),
-                                TextEntry::make('description'),
+                                TextEntry::make('description')
+                                    ->html(),
                                 TextEntry::make('stage'),
                             ]),
                         Section::make()->schema([])->columnSpan(1),

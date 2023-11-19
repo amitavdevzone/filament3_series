@@ -9,6 +9,7 @@ use App\Models\Contact;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -37,6 +38,7 @@ class ContactResource extends Resource
                     ])->columnSpan(2),
                 Section::make('Meta data')
                     ->schema([
+                        Toggle::make('is_active')->default(1),
                         Placeholder::make('owner_id')
                             ->label('Owner')
                             ->content(fn (Contact $contact): ?string => $contact?->owner?->name)
@@ -61,6 +63,7 @@ class ContactResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('email'),
                 TextColumn::make('phone_number'),
+                Tables\Columns\ToggleColumn::make('is_active'),
                 TextColumn::make('owner.name')
                     ->hidden(fn (Contact $contact): bool => $contact->owner_id !== auth()->user()->id),
                 TextColumn::make('created_at'),

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone_number')->nullable();
             $table->foreignIdFor(User::class, 'owner_id')->index();
+            $table->boolean('is_active')->default(1)->index();
             $table->timestamps();
         });
     }

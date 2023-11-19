@@ -21,6 +21,7 @@ class ContactFactory extends Factory
             'email' => $this->faker->email(),
             'phone_number' => $this->faker->phoneNumber(),
             'owner_id' => 1,
+            'is_active' => 1,
         ];
     }
 }
