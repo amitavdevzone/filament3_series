@@ -34,6 +34,13 @@ class DealResource extends Resource
                 Select::make('stage')
                     ->required()
                     ->options(DealStages::class),
+                Select::make('company_id')
+                    ->searchable()
+                    ->preload()
+                    ->relationship(
+                        name: 'company',
+                        titleAttribute: 'name',
+                    ),
                 Select::make('contact_id')
                     ->searchable()
                     ->preload()
@@ -54,6 +61,7 @@ class DealResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('company.name'),
                 Tables\Columns\TextColumn::make('contact.name'),
                 Tables\Columns\TextColumn::make('deal_value'),
                 Tables\Columns\SelectColumn::make('stage')

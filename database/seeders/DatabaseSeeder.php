@@ -45,7 +45,9 @@ class DatabaseSeeder extends Seeder
 
         // Create 10 deals for each contact.
         $contacts->each(function (Contact $contact) {
-            Deal::factory(10)->create(['contact_id' => $contact->id]);
+            Deal::factory(10)->create([
+                'contact_id' => $contact->id,
+            ]);
         });
 
         Carbon::now()->addDay();

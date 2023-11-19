@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\DealStages;
+use App\Models\Company;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->text('description');
             $table->enum('stage', DealStages::values())->default(DealStages::DEAL_INITIATED->value);
             $table->foreignIdFor(Contact::class)->index();
+            $table->foreignIdFor(Company::class)->index();
             $table->foreignIdFor(User::class, 'owner_id')->index();
             $table->float('deal_value', 10, 2);
             $table->timestamps();
