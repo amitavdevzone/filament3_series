@@ -6,6 +6,7 @@ use App\Enums\DealStages;
 use App\Filament\Resources\DealResource\Pages;
 use App\Models\Deal;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section as ComponentsSection;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -28,38 +29,40 @@ class DealResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->minLength(3)
-                    ->maxLength(255),
-                Select::make('stage')
-                    ->required()
-                    ->options(DealStages::class),
-                Select::make('company_id')
-                    ->live()
-                    ->searchable()
-                    ->preload()
-                    ->relationship(
-                        name: 'company',
-                        titleAttribute: 'name',
-                    ),
-                Select::make('contact_id')
-                    ->searchable()
-                    ->preload()
-                    ->relationship(
-                        name: 'contact',
-                        titleAttribute: 'name',
-                        modifyQueryUsing: fn (Builder $query, Get $get) => $query
-                            ->when($get('company_id') != '', function (Builder $query) use ($get) {
-                                $query->whereHas('companies', fn (Builder $query) => $query
-                                    ->where('companies.id', $get('company_id')));
-                            })
-                            ->active(),
-                    ),
-                TextInput::make('deal_value')
-                    ->required(),
-                RichEditor::make('description')
-                    ->required(),
+                ComponentsSection::make()->schema([
+                    TextInput::make('name')
+                        ->required()
+                        ->minLength(3)
+                        ->maxLength(255),
+                    Select::make('stage')
+                        ->required()
+                        ->options(DealStages::class),
+                    Select::make('company_id')
+                        ->live()
+                        ->searchable()
+                        ->preload()
+                        ->relationship(
+                            name: 'company',
+                            titleAttribute: 'name',
+                        ),
+                    Select::make('contact_id')
+                        ->searchable()
+                        ->preload()
+                        ->relationship(
+                            name: 'contact',
+                            titleAttribute: 'name',
+                            modifyQueryUsing: fn (Builder $query, Get $get) => $query
+                                ->when($get('company_id') != '', function (Builder $query) use ($get) {
+                                    $query->whereHas('companies', fn (Builder $query) => $query
+                                        ->where('companies.id', $get('company_id')));
+                                })
+                                ->active(),
+                        ),
+                    TextInput::make('deal_value')
+                        ->required(),
+                    RichEditor::make('description')
+                        ->required()->columnSpan(2),
+                ])->columns(2),
             ]);
     }
 
