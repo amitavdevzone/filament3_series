@@ -11,7 +11,13 @@ class Deal extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'status', 'contact_id', 'owner_id', 'deal_value', 'company_id',
+        'name',
+        'description',
+        'stage',
+        'contact_id',
+        'owner_id',
+        'deal_value',
+        'company_id',
     ];
 
     public function company(): BelongsTo
