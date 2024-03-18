@@ -16,6 +16,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -27,9 +28,9 @@ class DealResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                ComponentsSection::make()->schema([
+        return $form->schema([
+            ComponentsSection::make()
+                ->schema([
                     TextInput::make('name')
                         ->required()
                         ->minLength(3)
@@ -41,41 +42,49 @@ class DealResource extends Resource
                         ->live()
                         ->searchable()
                         ->preload()
-                        ->relationship(
-                            name: 'company',
-                            titleAttribute: 'name',
-                        ),
+                        ->relationship(name: 'company', titleAttribute: 'name'),
                     Select::make('contact_id')
                         ->searchable()
                         ->preload()
                         ->relationship(
                             name: 'contact',
                             titleAttribute: 'name',
-                            modifyQueryUsing: fn (Builder $query, Get $get) => $query
-                                ->when($get('company_id') != '', function (Builder $query) use ($get) {
-                                    $query->whereHas('companies', fn (Builder $query) => $query
-                                        ->where('companies.id', $get('company_id')));
+                            modifyQueryUsing: fn (
+                                Builder $query,
+                                Get $get
+                            ) => $query
+                                ->when($get('company_id') != '', function (
+                                    Builder $query
+                                ) use ($get) {
+                                    $query->whereHas(
+                                        'companies',
+                                        fn (Builder $query) => $query->where(
+                                            'companies.id',
+                                            $get('company_id')
+                                        )
+                                    );
                                 })
-                                ->active(),
+                                ->active()
                         ),
-                    TextInput::make('deal_value')
-                        ->required(),
-                    RichEditor::make('description')
-                        ->required()->columnSpan(2),
-                ])->columns(2),
-            ]);
+                    TextInput::make('deal_value')->required(),
+                    RichEditor::make('description')->required()->columnSpan(2),
+                ])
+                ->columns(2),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([Action::make('Kanban View')])
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('company.name'),
                 Tables\Columns\TextColumn::make('contact.name'),
                 Tables\Columns\TextColumn::make('deal_value'),
-                Tables\Columns\SelectColumn::make('stage')
-                    ->options(DealStages::class),
+                Tables\Columns\SelectColumn::make('stage')->options(
+                    DealStages::class
+                ),
                 Tables\Columns\TextColumn::make('owner.name'),
             ])
             ->filters([
@@ -94,26 +103,23 @@ class DealResource extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        return $infolist
-            ->schema([
-                Section::make()
-                    ->columns([
-                        'sm' => 4,
-                    ])
-                    ->schema([
-                        Section::make()->schema([])->columnSpan(1),
-                        Section::make()
-                            ->columnSpan(2)
-                            ->schema([
-                                TextEntry::make('name')
-                                    ->label('Deal name'),
-                                TextEntry::make('description')
-                                    ->html(),
-                                TextEntry::make('stage'),
-                            ]),
-                        Section::make()->schema([])->columnSpan(1),
-                    ]),
-            ]);
+        return $infolist->schema([
+            Section::make()
+                ->columns([
+                    'sm' => 4,
+                ])
+                ->schema([
+                    Section::make()->schema([])->columnSpan(1),
+                    Section::make()
+                        ->columnSpan(2)
+                        ->schema([
+                            TextEntry::make('name')->label('Deal name'),
+                            TextEntry::make('description')->html(),
+                            TextEntry::make('stage'),
+                        ]),
+                    Section::make()->schema([])->columnSpan(1),
+                ]),
+        ]);
     }
 
     public static function getRelations(): array

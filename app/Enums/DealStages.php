@@ -2,9 +2,11 @@
 
 namespace App\Enums;
 
+use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
+
 enum DealStages: string
 {
-    use BaseEnum;
+    use BaseEnum, IsKanbanStatus;
 
     case DEAL_INITIATED = 'deal_initiated';
     case APPOINTMENT_SCHEDULED = 'appointment_scheduled';
