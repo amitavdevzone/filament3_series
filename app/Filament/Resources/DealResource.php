@@ -9,6 +9,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section as ComponentsSection;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Infolists\Components\Section;
@@ -28,49 +29,7 @@ class DealResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form->schema([
-            ComponentsSection::make()
-                ->schema([
-                    TextInput::make('name')
-                        ->required()
-                        ->minLength(3)
-                        ->maxLength(255),
-                    Select::make('stage')
-                        ->required()
-                        ->options(DealStages::class),
-                    Select::make('company_id')
-                        ->live()
-                        ->searchable()
-                        ->preload()
-                        ->relationship(name: 'company', titleAttribute: 'name'),
-                    Select::make('contact_id')
-                        ->searchable()
-                        ->preload()
-                        ->relationship(
-                            name: 'contact',
-                            titleAttribute: 'name',
-                            modifyQueryUsing: fn (
-                                Builder $query,
-                                Get $get
-                            ) => $query
-                                ->when($get('company_id') != '', function (
-                                    Builder $query
-                                ) use ($get) {
-                                    $query->whereHas(
-                                        'companies',
-                                        fn (Builder $query) => $query->where(
-                                            'companies.id',
-                                            $get('company_id')
-                                        )
-                                    );
-                                })
-                                ->active()
-                        ),
-                    TextInput::make('deal_value')->required(),
-                    RichEditor::make('description')->required()->columnSpan(2),
-                ])
-                ->columns(2),
-        ]);
+        return $form->schema(self::getFormSchema());
     }
 
     public static function table(Table $table): Table
@@ -136,6 +95,55 @@ class DealResource extends Resource
             'create' => Pages\CreateDeal::route('/create'),
             'view' => Pages\ViewDeal::route('/{record}/view'),
             'edit' => Pages\EditDeal::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getFormSchema(): array
+    {
+        return [
+            ComponentsSection::make()
+                ->schema([
+                    TextInput::make('name')
+                        ->required()
+                        ->minLength(3)
+                        ->maxLength(255),
+
+                    ToggleButtons::make('stage')
+                        ->inline()
+                        ->options(DealStages::class)
+                        ->required(),
+                    Select::make('company_id')
+                        ->live()
+                        ->searchable()
+                        ->preload()
+                        ->relationship(name: 'company', titleAttribute: 'name'),
+                    Select::make('contact_id')
+                        ->searchable()
+                        ->preload()
+                        ->relationship(
+                            name: 'contact',
+                            titleAttribute: 'name',
+                            modifyQueryUsing: fn (
+                                Builder $query,
+                                Get $get
+                            ) => $query
+                                ->when($get('company_id') != '', function (
+                                    Builder $query
+                                ) use ($get) {
+                                    $query->whereHas(
+                                        'companies',
+                                        fn (Builder $query) => $query->where(
+                                            'companies.id',
+                                            $get('company_id')
+                                        )
+                                    );
+                                })
+                                ->active()
+                        ),
+                    TextInput::make('deal_value')->required(),
+                    RichEditor::make('description')->required()->columnSpan(2),
+                ])
+                ->columns(2),
         ];
     }
 }
